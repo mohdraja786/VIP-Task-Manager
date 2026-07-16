@@ -1,62 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>My To-Do List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Task Manager</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #1F4E78; text-align: center; margin-bottom: 30px; }
+        .input-group { display: flex; margin-bottom: 20px; }
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px 0 0 4px; font-size: 16px; }
+        button { padding: 12px 20px; border: none; background-color: #1F4E78; color: white; font-size: 16px; border-radius: 0 4px 4px 0; cursor: pointer; }
+        button:hover { background-color: #153956; }
+        ul { list-style: none; padding: 0; }
+        li { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f9f9f9; margin-bottom: 10px; border-radius: 4px; border-left: 5px solid #1F4E78; }
+        .delete-btn { color: #ff4d4d; text-decoration: none; font-weight: bold; }
+        .delete-btn:hover { color: #cc0000; }
+    </style>
 </head>
 <body>
-    <h1>मेरे काम (To-Do List)</h1>
-    <form action="/" method="GET" style="margin-bottom: 15px; gap: 5px;">
-            <input type="text" name="search" placeholder="काम खोजें (Search)..." value="{{ search_query }}">
-            <button type="submit" style="background-color: #3498db; color: white; border: none; padding: 12px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">खोजें</button>
-            {% if search_query %}
-                <a href="/" style="background-color: #95a5a6; color: white; padding: 12px 15px; border-radius: 5px; text-decoration: none; font-size: 14px; font-weight: bold; display: flex; align-items: center;">क्लियर</a>
-            {% endif %}
-        </form>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+<div class="container">
+    <h1>📋 VIP Task Manager</h1>
     
-    <form action="/add" method="POST">
-        <input type="text" name="title" placeholder="नया काम लिखें..." required>
+    <form action="/add" method="POST" class="input-group">
+        <input type="text" name="title" placeholder="नया टास्क यहाँ लिखें..." required>
         <button type="submit">जोड़ें</button>
     </form>
 
-    <hr>
-
     <ul>
-            {% for task in tasks %}
-                <li style="border-left: 5px solid {% if task[2] == 'Completed' %}#2ecc71{% else %}#3498db{% endif %};">
-                    <div>
-                        <span class="task-text">
-                            {% if task[2] == 'Completed' %}
-                                <del>{{ task[1] }}</del>
-                            {% else %}
-                                <strong>{{ task[1] }}</strong>
-                            {% endif %}
-                        </span>
-                        <span class="task-status" style="background-color: {% if task[2] == 'Completed' %}#d4edda{% else %}#ffeaa7{% endif %}; color: {% if task[2] == 'Completed' %}#155724{% else %}#856404{% endif %};">
-                            {{ task[2] }}
-                        </span>
-                        <!-- यहाँ हम वो तारीख और समय दिखा रहे हैं जो task[3] में सेव है -->
-                        <div style="font-size: 11px; color: #7f8c8d; margin-top: 5px;">
-                            📅 {{ task[3] if task[3] else 'No Date' }}
-                        </div>
-                    </div>
-                    <div>
-                        {% if task[2] != 'Completed' %}
-                            <a href="/complete/{{ task[0] }}">
-                                <button style="background-color: #2ecc71; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 5px;">✓ पूरा हुआ</button>
-                            </a>
-                        {% endif %}
-                        <a href="/delete/{{ task[0] }}">
-                            <button class="btn-delete">डिलीट</button>
-                        </a>
-                    </div>
-                </li>
-            {% else %}
-                <p class="empty-msg">अभी कोई काम नहीं है! नया काम जोड़ें।</p>
-            {% endfor %}
-        </ul>
-    
+        {% for task in tasks %}
+        <li>
+            <span>{{ task[1] }}</span>
+            <a href="/delete/{{ task[0] }}" class="delete-btn">❌ हटाएं</a>
+        </li>
+        {% else %}
+        <li style="border-left: 5px solid #ccc; justify-content: center; color: #777;">कोई टास्क नहीं है। आप फ्री हैं! 😎</li>
+        {% endfor %}
+    </ul>
+</div>
+
 </body>
 </html>
